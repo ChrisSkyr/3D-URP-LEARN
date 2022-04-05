@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     private GameObject UIPanels;
     [SerializeField]
     private List<GameObject> Panels = new List<GameObject>();
+    [SerializeField]
     private GameObject PausePanel;
     [SerializeField]
     private List<GameObject> PauseUI = new List<GameObject>();
@@ -30,7 +31,7 @@ public class UIManager : MonoBehaviour
             Panels.Add(UIPanels.transform.GetChild(i).gameObject);
         }
 
-        PausePanel = GameObject.Find("PausePanel");
+       
         for (int i = 0; i < PausePanel.transform.childCount; i++)
         {
             PauseUI.Add(PausePanel.transform.GetChild(i).gameObject);
@@ -39,51 +40,55 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        //Sets the Version of the Game
         Info.Version = Version;
         VersionText.text = Version;
+
+        //Resets the UI
+        ResetUI();
 
         Panels[1].SetActive(false);
     }
 
     private void Update()
     {
-        UIReset();
-        GetInput();
+        
+        Pause();
     }
 
-    public void GetInput()
+    public void Pause()
     {
         
         if(Input.GetKeyDown(KeyCode.Q))
         {
             if (Info.isPaused)
             {
-                Info.isReseted = true;
                 Info.isPaused = false;
-                Panels[1].SetActive(false);
-                PlayerUI.SetCrosshair(true);
+                ResetUI();
             }
             else
             {
                 Info.isPaused = true;
-                Panels[1].SetActive(true);
                 PlayerUI.SetCrosshair(false);
-
+                Panels[1].SetActive(true);
             }
         }
     }
 
-    private void UIReset()
+    private void ResetUI()
     {
-        if (Info.isReseted)
+        //Lock the Cursor in the center and enables GamePlay
+        PlayerUI.SetCrosshair(true);
+
+        //Sets the Pause Panel invisible
+        Panels[1].SetActive(false);
+
+        //Sets all panels visible exept Main Panel
+        foreach (GameObject obj in PauseUI)
         {
-            foreach (GameObject obj in PauseUI)
-            {
-                obj.SetActive(false);
-            }
-            PauseUI[0].SetActive(true);
-            Info.isReseted = false;
+            obj.SetActive(false);
         }
+        PauseUI[0].SetActive(true);
     }
 
     #region Main Buttons
