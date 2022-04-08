@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float range = 4f;
     [SerializeField] private Camera fpsCam;
 
-    [SerializeField] GameObject selected;
+    [SerializeField] private GameObject selected;
     [SerializeField] private OutlineScript selectable;
     [SerializeField] private Transform selection;
 
@@ -21,10 +21,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-       
-        
             Hit();
-        
     }
 
     void Hit()

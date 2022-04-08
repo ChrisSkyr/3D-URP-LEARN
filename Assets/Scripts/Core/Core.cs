@@ -30,8 +30,8 @@ namespace Core
         //Have gamestate of the game
         public static bool isPaused()
         {
-            GameInfo info = GameObject.Find("GameManager").GetComponent<GameInfo>();
-            bool pausevalue = info.isPaused;
+            GameManager gm = GameManager.Instance;
+            bool pausevalue = gm.isPaused;
             return pausevalue;
         }
 

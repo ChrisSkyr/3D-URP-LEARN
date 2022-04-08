@@ -6,6 +6,7 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using Core;
 
 #if UNITY_EDITOR
@@ -15,6 +16,10 @@ using UnityEditor;
 public class FirstPersonController : MonoBehaviour
 {
     private Rigidbody rb;
+    private PlayerInput playerInput;
+
+    public bool isCrouchKeyDown;
+    private bool isCrouchKeyCanceled;
 
     #region Camera Movement Variables
 
@@ -110,7 +115,7 @@ public class FirstPersonController : MonoBehaviour
     public float speedReduction = .5f;
 
     // Internal Variables
-    private bool isCrouched = false;
+    public bool isCrouched = false;
     private Vector3 originalScale;
 
     #endregion
@@ -131,6 +136,16 @@ public class FirstPersonController : MonoBehaviour
 
     private void Awake()
     {
+        playerInput = GetComponent<PlayerInput>();
+
+        playerInput.actions["Crouch"].started += _ => isCrouchKeyDown = true;
+        playerInput.actions["Crouch"].canceled += _ => isCrouchKeyCanceled = true; 
+        playerInput.actions["Crouch"].canceled += _ => isCrouchKeyDown = false;
+
+
+
+
+
         rb = GetComponent<Rigidbody>();
 
         crosshairObject = GetComponentInChildren<Image>();
@@ -197,6 +212,8 @@ public class FirstPersonController : MonoBehaviour
     }
 
     float camRotation;
+
+  
 
     private void Update()
     {
@@ -326,7 +343,7 @@ public class FirstPersonController : MonoBehaviour
             #region Jump
 
             // Gets input and calls jump method
-            if (enableJump && Input.GetKeyDown(jumpKey) && isGrounded)
+            if (enableJump && playerInput.actions["Jump"].triggered && isGrounded)
             {
                 Jump();
             }
@@ -337,20 +354,24 @@ public class FirstPersonController : MonoBehaviour
 
             if (enableCrouch)
             {
-                if (Input.GetKeyDown(crouchKey) && !holdToCrouch)
+                if (isCrouchKeyDown && !holdToCrouch)
                 {
+                    isCrouchKeyDown = false;
                     Crouch();
                 }
 
-                if (Input.GetKeyDown(crouchKey) && holdToCrouch)
+                if (isCrouchKeyDown && holdToCrouch)
                 {
+                    isCrouchKeyDown = false;
                     isCrouched = false;
                     Crouch();
                 }
-                else if (Input.GetKeyUp(crouchKey) && holdToCrouch)
+                else if (isCrouchKeyCanceled && holdToCrouch)
                 {
+                    isCrouchKeyCanceled = false;
                     isCrouched = true;
                     Crouch();
+                 
                 }
             }
 
@@ -367,6 +388,8 @@ public class FirstPersonController : MonoBehaviour
 
     void FixedUpdate()
     {
+        Vector2 movement = playerInput.actions["Movement"].ReadValue<Vector2>();
+
         if (!Game.isPaused())
         {
 
@@ -376,7 +399,7 @@ public class FirstPersonController : MonoBehaviour
             if (playerCanMove)
             {
                 // Calculate how fast we should be moving
-                Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+                Vector3 targetVelocity = new Vector3(movement.x, 0, movement.y);
 
                 // Checks if player is walking and isGrounded
                 // Will allow head bob
@@ -390,7 +413,7 @@ public class FirstPersonController : MonoBehaviour
                 }
 
                 // All movement calculations shile sprint is active
-                if (enableSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown)
+                if (enableSprint && playerInput.actions["Sprint"].triggered && sprintRemaining > 0f && !isSprintCooldown)
                 {
                     targetVelocity = transform.TransformDirection(targetVelocity) * sprintSpeed;
 

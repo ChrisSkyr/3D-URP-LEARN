@@ -25,7 +25,7 @@ public class FpsDisplay : MonoBehaviour
 
             time -= pollingTime;
             frameCount = 0;
-;       }
+       }
 
     }
 }

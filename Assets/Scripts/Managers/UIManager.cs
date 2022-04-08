@@ -18,12 +18,12 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> PauseUI = new List<GameObject>();
 
-    private GameInfo Info;
+    private GameManager gm;
 
     private void Awake()
     {
         VersionText = GameObject.Find("Version").GetComponent<TextMeshProUGUI>();
-        Info = gameObject.GetComponent<GameInfo>();
+        gm = GameManager.Instance;
 
         UIPanels = GameObject.Find("Panels");
         for (int i = 0; UIPanels.transform.childCount > i; i++)
@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         //Sets the Version of the Game
-        Info.Version = Version;
+        gm.Version = Version;
         VersionText.text = Version;
 
         //Resets the UI
@@ -51,8 +51,7 @@ public class UIManager : MonoBehaviour
     }
 
     private void Update()
-    {
-        
+    {  
         Pause();
     }
 
@@ -61,14 +60,14 @@ public class UIManager : MonoBehaviour
         
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            if (Info.isPaused)
+            if (gm.isPaused)
             {
-                Info.isPaused = false;
+                gm.isPaused = false;
                 ResetUI();
             }
             else
             {
-                Info.isPaused = true;
+                gm.isPaused = true;
                 PlayerUI.SetCrosshair(false);
                 Panels[1].SetActive(true);
             }
@@ -100,7 +99,7 @@ public class UIManager : MonoBehaviour
 
     public void Resume()
     {
-        Info.isPaused = false;
+        gm.isPaused = false;
         PausePanel.SetActive(false);
         PlayerUI.SetCrosshair(true);
     }

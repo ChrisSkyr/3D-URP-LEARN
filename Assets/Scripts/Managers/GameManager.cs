@@ -5,21 +5,20 @@ using Core;
 
 public class GameManager : MonoBehaviour
 {
- 
-    
-  
-    private GameInfo pauseInfo;
+    public static GameManager Instance;
+
+    public bool isPaused = false;
+    public string Version;
+
+
+
 
     public void Awake()
     {
-        pauseInfo = GameObject.Find("GameManager").GetComponent<GameInfo>();
-
+        Instance = this; 
     }
 
-    public void Update()
-    {
-       
-    }
+  
 
 
 }
