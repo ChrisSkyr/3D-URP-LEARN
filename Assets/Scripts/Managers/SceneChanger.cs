@@ -21,4 +21,6 @@ public class SceneChanger : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+
+    
 }
