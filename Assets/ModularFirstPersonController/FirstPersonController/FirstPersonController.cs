@@ -21,6 +21,9 @@ public class FirstPersonController : MonoBehaviour
     public bool isCrouchKeyDown;
     private bool isCrouchKeyCanceled;
 
+    private bool isZoomKeyDown;
+    private bool isZoomKeyCanceled;
+
     #region Camera Movement Variables
 
     public Camera playerCamera;
@@ -45,7 +48,7 @@ public class FirstPersonController : MonoBehaviour
     #region Camera Zoom Variables
 
     public bool enableZoom = true;
-    public bool holdToZoom = false;
+    public bool holdToZoom = true;
     public KeyCode zoomKey = KeyCode.Mouse1;
     public float zoomFOV = 30f;
     public float zoomStepTime = 5f;
@@ -139,8 +142,10 @@ public class FirstPersonController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
 
         playerInput.actions["Crouch"].started += _ => isCrouchKeyDown = true;
-        playerInput.actions["Crouch"].canceled += _ => isCrouchKeyCanceled = true; 
-        playerInput.actions["Crouch"].canceled += _ => isCrouchKeyDown = false;
+        playerInput.actions["Crouch"].canceled += _ => isCrouchKeyCanceled = true;
+
+        playerInput.actions["ZoomKey"].started += _ => isZoomKeyDown = true;
+        playerInput.actions["ZoomKey"].canceled += _ => isZoomKeyCanceled = true;
 
 
 
@@ -224,16 +229,16 @@ public class FirstPersonController : MonoBehaviour
             // Control camera movement
             if (cameraCanMove)
             {
-                yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
+                yaw = transform.localEulerAngles.y + playerInput.actions["MouseX"].ReadValue<float>() * mouseSensitivity;
 
                 if (!invertCamera)
                 {
-                    pitch -= mouseSensitivity * Input.GetAxis("Mouse Y");
+                    pitch -= mouseSensitivity * playerInput.actions["MouseY"].ReadValue<float>();
                 }
                 else
                 {
                     // Inverted Y
-                    pitch += mouseSensitivity * Input.GetAxis("Mouse Y");
+                    pitch += mouseSensitivity * playerInput.actions["MouseY"].ReadValue<float>();
                 }
 
                 // Clamp pitch between lookAngle
@@ -249,8 +254,9 @@ public class FirstPersonController : MonoBehaviour
             {
                 // Changes isZoomed when key is pressed
                 // Behavior for toogle zoom
-                if (Input.GetKeyDown(zoomKey) && !holdToZoom && !isSprinting)
+                if (isZoomKeyDown && !holdToZoom && !isSprinting)
                 {
+                    isZoomKeyDown = false;
                     if (!isZoomed)
                     {
                         isZoomed = true;
@@ -265,12 +271,14 @@ public class FirstPersonController : MonoBehaviour
                 // Behavior for hold to zoom
                 if (holdToZoom && !isSprinting)
                 {
-                    if (Input.GetKeyDown(zoomKey))
+                    if (isZoomKeyDown)
                     {
+                        isZoomKeyDown = false;
                         isZoomed = true;
                     }
-                    else if (Input.GetKeyUp(zoomKey))
+                    else if (isZoomKeyCanceled)
                     {
+                        isZoomKeyCanceled = false;
                         isZoomed = false;
                     }
                 }

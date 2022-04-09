@@ -1117,7 +1117,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 726347595}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 50, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1196,6 +1196,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 919348442}
+  - component: {fileID: 919348443}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -1218,6 +1219,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &919348443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919348441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af74ed5248a1fe4f8aa888483120db7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1022941668
 GameObject:
   m_ObjectHideFlags: 0
@@ -1934,7 +1947,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   - {fileID: 2100000, guid: d99d771f5e8caf648918532becda3666, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -3516,7 +3528,7 @@ MonoBehaviour:
   fov: 60
   invertCamera: 0
   cameraCanMove: 1
-  mouseSensitivity: 2
+  mouseSensitivity: 0.3
   maxLookAngle: 70
   lockCursor: 1
   crosshair: 1
@@ -3655,6 +3667,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 66122d68-0d77-4bf8-908e-567aba07af8d
     m_ActionName: Game/Sprint[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2ba201d0-9050-4de1-b22b-24853993031f
+    m_ActionName: Game/ExitUI[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 90b061e0-1212-4507-b25d-d14e7f3aedc9
+    m_ActionName: Game/ZoomKey[/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0bbd2a96-afb9-4e84-afc1-a53be0011479
+    m_ActionName: Game/MouseX[/Mouse/delta/x]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 178cebb7-bd2f-4417-acbe-18c7e0642a90
+    m_ActionName: Game/MouseY[/Mouse/delta/y]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Game

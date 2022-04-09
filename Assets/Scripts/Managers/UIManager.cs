@@ -75,21 +75,24 @@ public class UIManager : MonoBehaviour
 
     public void Pause()
     {
-        
-        if(playerInput.actions["ExitUI"].triggered)
+       if(playerInput != null)
         {
-            if (gm.isPaused)
+            if (playerInput.actions["ExitUI"].triggered)
             {
-                gm.isPaused = false;
-                ResetUI();
-            }
-            else
-            {
-                gm.isPaused = true;
-                PlayerUI.SetCrosshair(false);
-                Panels[1].SetActive(true);
+                if (gm.isPaused)
+                {
+                    gm.isPaused = false;
+                    ResetUI();
+                }
+                else
+                {
+                    gm.isPaused = true;
+                    PlayerUI.SetCrosshair(false);
+                    Panels[1].SetActive(true);
+                }
             }
         }
+        
     }
 
     private void ResetUI()
