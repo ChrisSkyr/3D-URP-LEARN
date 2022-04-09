@@ -2,14 +2,21 @@ using Core;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
+    //Instance of UIManger
+    public static UIManager Instance;
+
+    #region Version
     [SerializeField]
     [Header("The Current Version")]
     private string Version;
     private TextMeshProUGUI VersionText;
+    #endregion
 
+    #region UI Lists
     private GameObject UIPanels;
     [SerializeField]
     private List<GameObject> Panels = new List<GameObject>();
@@ -17,13 +24,24 @@ public class UIManager : MonoBehaviour
     private GameObject PausePanel;
     [SerializeField]
     private List<GameObject> PauseUI = new List<GameObject>();
+    #endregion
 
+    #region Class Refrences
     private GameManager gm;
+    private SceneChanger sceneChanger;
+    private PlayerInput playerInput;
+    #endregion
+
 
     private void Awake()
     {
-        VersionText = GameObject.Find("Version").GetComponent<TextMeshProUGUI>();
+        Instance = this;
+
+        
         gm = GameManager.Instance;
+        sceneChanger = SceneChanger.Instance;
+        VersionText = GameObject.Find("Version").GetComponent<TextMeshProUGUI>();
+        playerInput = GameObject.Find("FirstPersonController").GetComponent<PlayerInput>();
 
         UIPanels = GameObject.Find("Panels");
         for (int i = 0; UIPanels.transform.childCount > i; i++)
@@ -58,7 +76,7 @@ public class UIManager : MonoBehaviour
     public void Pause()
     {
         
-        if(Input.GetKeyDown(KeyCode.Q))
+        if(playerInput.actions["ExitUI"].triggered)
         {
             if (gm.isPaused)
             {
@@ -106,7 +124,7 @@ public class UIManager : MonoBehaviour
 
     public void ExitGame()
     {
-        Application.Quit();
+        sceneChanger.OnSceneExit();
     }
     #endregion
 }
