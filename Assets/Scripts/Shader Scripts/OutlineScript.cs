@@ -9,9 +9,9 @@ public class OutlineScript : MonoBehaviour
 
     [SerializeField] private Material outlineMaterial;
 
-    [SerializeField] private float outlineScaleFactor;
+    [SerializeField] private float outlineScaleFactor = -1.1f;
 
-    [SerializeField] private Color outlineColor;
+    [SerializeField] private Color outlineColor = Color.white;
 
     private Renderer outlineRenderer;
 
