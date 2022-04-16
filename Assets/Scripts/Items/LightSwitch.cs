@@ -1,40 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Core;
 
 public class LightSwitch : Interactable
 {
+    private Animator animator;
     [SerializeField] private Light m_Light;
-    public bool isOn;
 
-    [SerializeField] private GameObject enabledSwitch;
-    [SerializeField] private GameObject disabledSwitch;
+    public bool isOn;
+    public string currentState;
+
+    //Animations
+    const string ENABLE_SWITCH = "Switch enable animation";
+    const string DISABLE_SWITCH = "Switch disable animation";
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
+
         UpdateLight();    
+    }
+
+    private void ChangeAnimationState(string newState)
+    {
+        //stop the same animation to overwrite itself
+        if (currentState == newState) return;
+
+        //play the animation
+        animator.Play(newState);
+
+        //reassign the current state
+        currentState = newState;
     }
 
     private void Update()
     {
-        if(isOn)
-        {
-            Destroy(gameObject.transform.GetChild(0));
-            Instantiate(enabledSwitch);
-        }
-        else
-        {
-            if (transform.childCount > 1)
-            {
-                Destroy(gameObject.transform.GetChild(0));
-                Instantiate(disabledSwitch);
-            }
-        }
+      
     }
 
     void UpdateLight()
     {
         m_Light.enabled = isOn;
+      
+        if(isOn)
+        {
+            ChangeAnimationState(DISABLE_SWITCH);
+        }
+        else
+       {
+          ChangeAnimationState(ENABLE_SWITCH);
+        }
     }
 
     public override string GetDescription()
