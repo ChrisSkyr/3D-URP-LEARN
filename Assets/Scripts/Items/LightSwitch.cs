@@ -59,7 +59,7 @@ public class LightSwitch : Interactable
         return "Press [E] to turn <color=green>on</color> the light.";
     }
 
-    public override void Interact()
+    public override void Interaction()
     {
         isOn = !isOn;
         UpdateLight();
