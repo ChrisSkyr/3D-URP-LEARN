@@ -7,7 +7,7 @@ public class MainMenuManager : MonoBehaviour
     public static MainMenuManager Instance;
 
     [SerializeField] private GameObject MainMenu;
-    [SerializeField] private List<GameObject> Panels = new List<GameObject>();
+    [SerializeField] private Dictionary<string, GameObject> Panels = new Dictionary<string, GameObject>();
 
     private void Awake()
     {
@@ -15,7 +15,7 @@ public class MainMenuManager : MonoBehaviour
 
         for (int i = 0; i < MainMenu.transform.childCount; i++)
         {
-            Panels.Add(MainMenu.transform.GetChild(i).gameObject);
+            Panels.Add(MainMenu.transform.GetChild(i).name, MainMenu.transform.GetChild(i).gameObject);
         }
     }
 

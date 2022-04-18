@@ -16,14 +16,14 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI VersionText;
     #endregion
 
-    #region UI Lists
+    #region UI Dictionaries
     private GameObject UIPanels;
     [SerializeField]
-    private List<GameObject> Panels = new List<GameObject>();
+    private Dictionary<string, GameObject> Panels = new Dictionary<string, GameObject>();
     [SerializeField]
     private GameObject PausePanel;
     [SerializeField]
-    private List<GameObject> PauseUI = new List<GameObject>();
+    private Dictionary<string, GameObject> PauseUI = new Dictionary<string, GameObject>();
     #endregion
 
     #region Class Refrences
@@ -37,7 +37,7 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
 
-        
+
         gm = GameManager.Instance;
         sceneChanger = SceneChanger.Instance;
         VersionText = GameObject.Find("Version").GetComponent<TextMeshProUGUI>();
@@ -46,13 +46,13 @@ public class UIManager : MonoBehaviour
         UIPanels = GameObject.Find("Panels");
         for (int i = 0; UIPanels.transform.childCount > i; i++)
         {
-            Panels.Add(UIPanels.transform.GetChild(i).gameObject);
+            Panels.Add(UIPanels.transform.GetChild(i).name, UIPanels.transform.GetChild(i).gameObject);
         }
 
-       
+
         for (int i = 0; i < PausePanel.transform.childCount; i++)
         {
-            PauseUI.Add(PausePanel.transform.GetChild(i).gameObject);
+            PauseUI.Add(PausePanel.transform.GetChild(i).name ,PausePanel.transform.GetChild(i).gameObject);
         }
     }
 
@@ -65,17 +65,17 @@ public class UIManager : MonoBehaviour
         //Resets the UI
         ResetUI();
 
-        Panels[1].SetActive(false);
+        Panels["PausePanel"].SetActive(false);
     }
 
     private void Update()
-    {  
+    {
         Pause();
     }
 
     public void Pause()
     {
-       if(playerInput != null)
+        if (playerInput != null)
         {
             if (playerInput.actions["ExitUI"].triggered)
             {
@@ -88,11 +88,11 @@ public class UIManager : MonoBehaviour
                 {
                     gm.isPaused = true;
                     PlayerUI.SetCrosshair(false);
-                    Panels[1].SetActive(true);
+                    Panels["PausePanel"].SetActive(true);
                 }
             }
         }
-        
+
     }
 
     private void ResetUI()
@@ -101,21 +101,21 @@ public class UIManager : MonoBehaviour
         PlayerUI.SetCrosshair(true);
 
         //Sets the Pause Panel invisible
-        Panels[1].SetActive(false);
+        Panels["PausePanel"].SetActive(false);
 
         //Sets all panels visible exept Main Panel
-        foreach (GameObject obj in PauseUI)
+        foreach (var obj in PauseUI.Values)
         {
             obj.SetActive(false);
         }
-        PauseUI[0].SetActive(true);
+        PauseUI["Main"].SetActive(true);
     }
 
     #region Main Buttons
     public void Settings()
     {
-        PauseUI[0].SetActive(false);
-        PauseUI[1].SetActive(true);
+        PauseUI["Main"].SetActive(false);
+        PauseUI["Settings"].SetActive(true);
     }
 
     public void Resume()

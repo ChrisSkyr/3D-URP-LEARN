@@ -45,11 +45,11 @@ public class LightSwitch : Interactable
       
         if(isOn)
         {
-            ChangeAnimationState(DISABLE_SWITCH);
+            ChangeAnimationState(ENABLE_SWITCH);
         }
         else
        {
-          ChangeAnimationState(ENABLE_SWITCH);
+          ChangeAnimationState(DISABLE_SWITCH);
         }
     }
 
@@ -59,7 +59,7 @@ public class LightSwitch : Interactable
         return "Press [E] to turn <color=green>on</color> the light.";
     }
 
-    public override void Interaction()
+    public override void Interact()
     {
         isOn = !isOn;
         UpdateLight();
