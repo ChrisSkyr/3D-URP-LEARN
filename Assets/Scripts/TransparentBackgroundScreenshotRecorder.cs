@@ -34,8 +34,8 @@ public class TransparentBackgroundScreenshotRecorder : MonoBehaviour
     private int videoFrame = 0; // how many frames we've rendered
     private float originalTimescaleTime;
     private bool done = false;
-    private int screenWidth;
-    private int screenHeight;
+    public int screenWidth;
+    public int screenHeight;
     private Texture2D textureBlack;
     private Texture2D textureWhite;
     private Texture2D textureTransparentBackground;
@@ -165,8 +165,6 @@ public class TransparentBackgroundScreenshotRecorder : MonoBehaviour
     void CacheAndInitialiseFields()
     {
         originalTimescaleTime = Time.timeScale;
-        screenWidth = Screen.width;
-        screenHeight = Screen.height;
         textureBlack = new Texture2D(screenWidth, screenHeight, TextureFormat.RGB24, false);
         textureWhite = new Texture2D(screenWidth, screenHeight, TextureFormat.RGB24, false);
         textureTransparentBackground = new Texture2D(screenWidth, screenHeight, TextureFormat.ARGB32, false);
